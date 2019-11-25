@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.busgo.fc.inner.dao.HouseDao">
+    <!--Create by Auto Generator -->
+    <resultMap type="com.busgo.fc.inner.model.House" id="HouseMap">
+        <result column="id" property="id"/>
+        <result column="biz_id" property="bizId"/>
+        <result column="title" property="title"/>
+        <result column="source" property="source"/>
+        <result column="price" property="price"/>
+        <result column="imgurl" property="imgurl"/>
+        <result column="up_down" property="upDown"/>
+        <result column="area" property="area"/>
+        <result column="house_type" property="houseType"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="community_name" property="communityName"/>
+        <result column="location_x" property="locationX"/>
+        <result column="location_y" property="locationY"/>
+        <result column="bed_room" property="bedRoom"/>
+        <result column="living_room" property="livingRoom"/>
+        <result column="toilet" property="toilet"/>
+        <result column="sq_name" property="sqName"/>
+        <result column="sq_spell" property="sqSpell"/>
+        <result column="qy_name" property="qyName"/>
+        <result column="qy_spell" property="qySpell"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="down_time" property="downTime"/>
+        <result column="heading" property="heading"/>
+        <result column="house_all_floor" property="houseAllFloor"/>
+        <result column="building_floor" property="buildingFloor"/>
+        <result column="decorate_level" property="decorateLevel"/>
+        <result column="build_year" property="buildYear"/>
+        <result column="public_time" property="publicTime"/>
+        <result column="government_code" property="governmentCode"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+
+    <sql id="_field_list">
+         `id`,
+         `biz_id`,
+         `title`,
+         `source`,
+         `price`,
+         `imgurl`,
+         `up_down`,
+         `area`,
+         `house_type`,
+         `unit_price`,
+         `community_name`,
+         `location_x`,
+         `location_y`,
+         `bed_room`,
+         `living_room`,
+         `toilet`,
+         `sq_name`,
+         `sq_spell`,
+         `qy_name`,
+         `qy_spell`,
+         `update_time`,
+         `down_time`,
+         `heading`,
+         `house_all_floor`,
+         `building_floor`,
+         `decorate_level`,
+         `build_year`,
+         `public_time`,
+         `government_code`,
+         `create_time`,
+         `modify_time`
+    </sql>
+
+    <sql id="_value_list">
+     #{id},
+     #{bizId},
+     #{title},
+     #{source},
+     #{price},
+     #{imgurl},
+     #{upDown},
+     #{area},
+     #{houseType},
+     #{unitPrice},
+     #{communityName},
+     #{locationX},
+     #{locationY},
+     #{bedRoom},
+     #{livingRoom},
+     #{toilet},
+     #{sqName},
+     #{sqSpell},
+     #{qyName},
+     #{qySpell},
+     #{updateTime},
+     #{downTime},
+     #{heading},
+     #{houseAllFloor},
+     #{buildingFloor},
+     #{decorateLevel},
+     #{buildYear},
+     #{publicTime},
+     #{governmentCode},
+     #{createTime},
+     #{modifyTime}
+    </sql>
+
+    <sql id="_batch_value_list">
+     #{item.id},
+     #{item.bizId},
+     #{item.title},
+     #{item.source},
+     #{item.price},
+     #{item.imgurl},
+     #{item.upDown},
+     #{item.area},
+     #{item.houseType},
+     #{item.unitPrice},
+     #{item.communityName},
+     #{item.locationX},
+     #{item.locationY},
+     #{item.bedRoom},
+     #{item.livingRoom},
+     #{item.toilet},
+     #{item.sqName},
+     #{item.sqSpell},
+     #{item.qyName},
+     #{item.qySpell},
+     #{item.updateTime},
+     #{item.downTime},
+     #{item.heading},
+     #{item.houseAllFloor},
+     #{item.buildingFloor},
+     #{item.decorateLevel},
+     #{item.buildYear},
+     #{item.publicTime},
+     #{item.governmentCode},
+     #{item.createTime},
+     #{item.modifyTime}
+    </sql>
+
+    <sql id="_common_where">
+     <if test="id !=null">AND `id`=#{id}</if>
+     <if test="bizId !=null">AND `biz_id`=#{bizId}</if>
+     <if test="title !=null">AND `title`=#{title}</if>
+     <if test="source !=null">AND `source`=#{source}</if>
+     <if test="price !=null">AND `price`=#{price}</if>
+     <if test="imgurl !=null">AND `imgurl`=#{imgurl}</if>
+     <if test="upDown !=null">AND `up_down`=#{upDown}</if>
+     <if test="area !=null">AND `area`=#{area}</if>
+     <if test="houseType !=null">AND `house_type`=#{houseType}</if>
+     <if test="unitPrice !=null">AND `unit_price`=#{unitPrice}</if>
+     <if test="communityName !=null">AND `community_name`=#{communityName}</if>
+     <if test="locationX !=null">AND `location_x`=#{locationX}</if>
+     <if test="locationY !=null">AND `location_y`=#{locationY}</if>
+     <if test="bedRoom !=null">AND `bed_room`=#{bedRoom}</if>
+     <if test="livingRoom !=null">AND `living_room`=#{livingRoom}</if>
+     <if test="toilet !=null">AND `toilet`=#{toilet}</if>
+     <if test="sqName !=null">AND `sq_name`=#{sqName}</if>
+     <if test="sqSpell !=null">AND `sq_spell`=#{sqSpell}</if>
+     <if test="qyName !=null">AND `qy_name`=#{qyName}</if>
+     <if test="qySpell !=null">AND `qy_spell`=#{qySpell}</if>
+     <if test="updateTime !=null">AND `update_time`=#{updateTime}</if>
+     <if test="downTime !=null">AND `down_time`=#{downTime}</if>
+     <if test="heading !=null">AND `heading`=#{heading}</if>
+     <if test="houseAllFloor !=null">AND `house_all_floor`=#{houseAllFloor}</if>
+     <if test="buildingFloor !=null">AND `building_floor`=#{buildingFloor}</if>
+     <if test="decorateLevel !=null">AND `decorate_level`=#{decorateLevel}</if>
+     <if test="buildYear !=null">AND `build_year`=#{buildYear}</if>
+     <if test="publicTime !=null">AND `public_time`=#{publicTime}</if>
+     <if test="governmentCode !=null">AND `government_code`=#{governmentCode}</if>
+     <if test="createTime !=null">AND `create_time`=#{createTime}</if>
+     <if test="modifyTime !=null">AND `modify_time`=#{modifyTime}</if>
+     <if test="includeIdList !=null">
+         AND `id` IN
+         <foreach collection="includeIdList" item="item" open="(" close=")" separator=",">
+            #{item}
+         </foreach>
+     </if>
+        <if test="excludeIdList !=null">
+            AND `id` NOT IN
+            <foreach collection="excludeIdList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="_common_sort">
+        <if test="sorts !=null">
+            ORDER BY
+            <foreach collection="sorts" item="sort" separator=",">
+            ${sort.columnName} ${sort.sortMode.mode}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="_page_field">
+        <if test="offset != null and rows !=null">
+           LIMIT #{offset},#{rows}
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `house`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="_field_list"/>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="_value_list"/>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `house`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="_field_list"/>
+        </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (<include refid="_batch_value_list"/>)
+        </foreach>
+    </insert>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="HouseMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `house`
+        WHERE `id` = #{id} limit 1
+    </select>
+
+    <select id="selectByIdForUpdate" parameterType="java.lang.Long" resultMap="HouseMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `house`
+        WHERE `id` = #{id} limit 1 FOR UPDATE
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM `house` WHERE `id` = #{id} limit 1
+    </delete>
+
+    <delete id="deleteByParam" parameterType="map">
+        DELETE
+        FROM `house`
+        <where>
+            <include refid="_common_where"/>
+        </where>
+        <include refid="_page_field"/>
+    </delete>
+
+    <update id="updateById">
+        UPDATE `house`
+        <trim prefix="SET" suffixOverrides="," prefixOverrides=",">
+            <if test="bizId !=null">`biz_id`=#{bizId},</if>
+            <if test="title !=null">`title`=#{title},</if>
+            <if test="source !=null">`source`=#{source},</if>
+            <if test="price !=null">`price`=#{price},</if>
+            <if test="imgurl !=null">`imgurl`=#{imgurl},</if>
+            <if test="upDown !=null">`up_down`=#{upDown},</if>
+            <if test="area !=null">`area`=#{area},</if>
+            <if test="houseType !=null">`house_type`=#{houseType},</if>
+            <if test="unitPrice !=null">`unit_price`=#{unitPrice},</if>
+            <if test="communityName !=null">`community_name`=#{communityName},</if>
+            <if test="locationX !=null">`location_x`=#{locationX},</if>
+            <if test="locationY !=null">`location_y`=#{locationY},</if>
+            <if test="bedRoom !=null">`bed_room`=#{bedRoom},</if>
+            <if test="livingRoom !=null">`living_room`=#{livingRoom},</if>
+            <if test="toilet !=null">`toilet`=#{toilet},</if>
+            <if test="sqName !=null">`sq_name`=#{sqName},</if>
+            <if test="sqSpell !=null">`sq_spell`=#{sqSpell},</if>
+            <if test="qyName !=null">`qy_name`=#{qyName},</if>
+            <if test="qySpell !=null">`qy_spell`=#{qySpell},</if>
+            <if test="updateTime !=null">`update_time`=#{updateTime},</if>
+            <if test="downTime !=null">`down_time`=#{downTime},</if>
+            <if test="heading !=null">`heading`=#{heading},</if>
+            <if test="houseAllFloor !=null">`house_all_floor`=#{houseAllFloor},</if>
+            <if test="buildingFloor !=null">`building_floor`=#{buildingFloor},</if>
+            <if test="decorateLevel !=null">`decorate_level`=#{decorateLevel},</if>
+            <if test="buildYear !=null">`build_year`=#{buildYear},</if>
+            <if test="publicTime !=null">`public_time`=#{publicTime},</if>
+            <if test="governmentCode !=null">`government_code`=#{governmentCode},</if>
+            <if test="createTime !=null">`create_time`=#{createTime},</if>
+            <if test="modifyTime !=null">`modify_time`=#{modifyTime},</if>
+        </trim>
+        WHERE `id`=#{id} LIMIT 1
+    </update>
+
+    <update id="updateByQuery">
+        UPDATE `house`
+        <trim prefix="SET" suffixOverrides="," prefixOverrides=",">
+            <if test="po.bizId !=null">`biz_id`=#{po.bizId},</if>
+            <if test="po.title !=null">`title`=#{po.title},</if>
+            <if test="po.source !=null">`source`=#{po.source},</if>
+            <if test="po.price !=null">`price`=#{po.price},</if>
+            <if test="po.imgurl !=null">`imgurl`=#{po.imgurl},</if>
+            <if test="po.upDown !=null">`up_down`=#{po.upDown},</if>
+            <if test="po.area !=null">`area`=#{po.area},</if>
+            <if test="po.houseType !=null">`house_type`=#{po.houseType},</if>
+            <if test="po.unitPrice !=null">`unit_price`=#{po.unitPrice},</if>
+            <if test="po.communityName !=null">`community_name`=#{po.communityName},</if>
+            <if test="po.locationX !=null">`location_x`=#{po.locationX},</if>
+            <if test="po.locationY !=null">`location_y`=#{po.locationY},</if>
+            <if test="po.bedRoom !=null">`bed_room`=#{po.bedRoom},</if>
+            <if test="po.livingRoom !=null">`living_room`=#{po.livingRoom},</if>
+            <if test="po.toilet !=null">`toilet`=#{po.toilet},</if>
+            <if test="po.sqName !=null">`sq_name`=#{po.sqName},</if>
+            <if test="po.sqSpell !=null">`sq_spell`=#{po.sqSpell},</if>
+            <if test="po.qyName !=null">`qy_name`=#{po.qyName},</if>
+            <if test="po.qySpell !=null">`qy_spell`=#{po.qySpell},</if>
+            <if test="po.updateTime !=null">`update_time`=#{po.updateTime},</if>
+            <if test="po.downTime !=null">`down_time`=#{po.downTime},</if>
+            <if test="po.heading !=null">`heading`=#{po.heading},</if>
+            <if test="po.houseAllFloor !=null">`house_all_floor`=#{po.houseAllFloor},</if>
+            <if test="po.buildingFloor !=null">`building_floor`=#{po.buildingFloor},</if>
+            <if test="po.decorateLevel !=null">`decorate_level`=#{po.decorateLevel},</if>
+            <if test="po.buildYear !=null">`build_year`=#{po.buildYear},</if>
+            <if test="po.publicTime !=null">`public_time`=#{po.publicTime},</if>
+            <if test="po.governmentCode !=null">`government_code`=#{po.governmentCode},</if>
+            <if test="po.createTime !=null">`create_time`=#{po.createTime},</if>
+            <if test="po.modifyTime !=null">`modify_time`=#{po.modifyTime},</if>
+        </trim>
+        <where>
+            <if test="query.id !=null">AND `id`=#{query.id}</if>
+            <if test="query.bizId !=null">AND `biz_id`=#{query.bizId}</if>
+            <if test="query.title !=null">AND `title`=#{query.title}</if>
+            <if test="query.source !=null">AND `source`=#{query.source}</if>
+            <if test="query.price !=null">AND `price`=#{query.price}</if>
+            <if test="query.imgurl !=null">AND `imgurl`=#{query.imgurl}</if>
+            <if test="query.upDown !=null">AND `up_down`=#{query.upDown}</if>
+            <if test="query.area !=null">AND `area`=#{query.area}</if>
+            <if test="query.houseType !=null">AND `house_type`=#{query.houseType}</if>
+            <if test="query.unitPrice !=null">AND `unit_price`=#{query.unitPrice}</if>
+            <if test="query.communityName !=null">AND `community_name`=#{query.communityName}</if>
+            <if test="query.locationX !=null">AND `location_x`=#{query.locationX}</if>
+            <if test="query.locationY !=null">AND `location_y`=#{query.locationY}</if>
+            <if test="query.bedRoom !=null">AND `bed_room`=#{query.bedRoom}</if>
+            <if test="query.livingRoom !=null">AND `living_room`=#{query.livingRoom}</if>
+            <if test="query.toilet !=null">AND `toilet`=#{query.toilet}</if>
+            <if test="query.sqName !=null">AND `sq_name`=#{query.sqName}</if>
+            <if test="query.sqSpell !=null">AND `sq_spell`=#{query.sqSpell}</if>
+            <if test="query.qyName !=null">AND `qy_name`=#{query.qyName}</if>
+            <if test="query.qySpell !=null">AND `qy_spell`=#{query.qySpell}</if>
+            <if test="query.updateTime !=null">AND `update_time`=#{query.updateTime}</if>
+            <if test="query.downTime !=null">AND `down_time`=#{query.downTime}</if>
+            <if test="query.heading !=null">AND `heading`=#{query.heading}</if>
+            <if test="query.houseAllFloor !=null">AND `house_all_floor`=#{query.houseAllFloor}</if>
+            <if test="query.buildingFloor !=null">AND `building_floor`=#{query.buildingFloor}</if>
+            <if test="query.decorateLevel !=null">AND `decorate_level`=#{query.decorateLevel}</if>
+            <if test="query.buildYear !=null">AND `build_year`=#{query.buildYear}</if>
+            <if test="query.publicTime !=null">AND `public_time`=#{query.publicTime}</if>
+            <if test="query.governmentCode !=null">AND `government_code`=#{query.governmentCode}</if>
+            <if test="query.createTime !=null">AND `create_time`=#{query.createTime}</if>
+            <if test="query.modifyTime !=null">AND `modify_time`=#{query.modifyTime}</if>
+        </where>
+    </update>
+
+    <select id="queryListByParam" parameterType="map" resultMap="HouseMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `house`
+        <where>
+            <include refid="_common_where"/>
+        </where>
+        <include refid="_common_sort"/>
+        <include refid="_page_field"/>
+    </select>
+
+    <select id="queryCountByParam" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM `house`
+        <where>
+            <include refid="_common_where"/>
+        </where>
+    </select>
+
+    <select id="queryPkListByParam" parameterType="map" resultType="java.lang.Long">
+        SELECT
+        `id`
+        FROM `house`
+        <where>
+            <include refid="_common_where"/>
+        </where>
+        <include refid="_common_sort"/>
+        <include refid="_page_field"/>
+    </select>
+
+</mapper>
