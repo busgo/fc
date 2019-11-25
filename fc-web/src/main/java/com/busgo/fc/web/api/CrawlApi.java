@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/crawl")
-public class PingApi {
+public class CrawlApi {
 
 
     @Resource
