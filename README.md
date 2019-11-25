@@ -93,4 +93,27 @@ spring.datasource.druid.connectionProperties=druid.stat.mergeSql=true;druid.stat
 
 ####  开始抓取
 
-> 我爱我家 >>> curl 
+> 我爱我家 >>> curl http://127.0.0.1:8003/crawl?type=1
+
+> 链家 >>> curl http://127.0.0.1:8003/crawl?type=2
+
+
+####  注意事项
+
+1.  在爬取过程中时间比较长请耐心等待。
+2.  在解析过程中，某些特殊的房屋信息会出现异常(自己稍微修复下即可)。
+
+
+
+
+####  声明
+
+> 本项目仅适用个人学习研究使用，请勿用于商业用途。
+
+
+
+
+
+
+
+
