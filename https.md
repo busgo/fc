@@ -1,3 +1,7 @@
+## https双向认证客户端配置
+
+
+
 ####  把pem转为 p12
 > openssl pkcs12 -export -out Cert.p12 -in cert.pem -inkey key.pem 
 ####  p12导出cer证书 
@@ -6,186 +10,149 @@
 > keytool -import -file server.cer -keystore server.keystore
 
 
+
+1.  将客户端用的SSL cer证书给服务端并添加信任。
+2.  将客户端SSL .pem和 .key 证书转为p12证书
+
+>   openssl pkcs12 -export -out bar.com.p12 -in bar.com.pem -inkey bar.com.key
+
+会产生 一个名字为bar.com.p12文件(注意一定要保存好密码)
+
+
+3.访问服务端地址将服务端的cer证书导出
+如 server.cer
+
+4.将server.cer 转为keystore
+
+>   keytool -import -file server.cer -keystore pay.foo.com.keystrore
+
+
+
 ```java
-
-package com.example.server;
-
+package com.qy.trade.payment;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
-import java.io.*;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class HttpClientforSSL {
+/**
+ * @author busgo
+ * @date 2020-01-05 16:57
+ */
+@Component
+public class PaymentHttpClient implements InitializingBean {
 
 
-    private final static  String keyStoreType="PKCS12";
+    private final Logger log = LoggerFactory.getLogger(PaymentHttpClient.class);
 
 
-    private final static  String keyStoreFilePath = "/Users/apple/Desktop/wp/code/home/server/src/main/resources/client.key.p12";
-    private final static  String trustStoreFilePath = "/Users/apple/Desktop/wp/code/home/server/src/main/resources/client.jks";
 
-    private final static String password = "anniu_key_2020";
+    private final static String keyStorePass = "123456";
+    private final static String trustStorePass = "123456";
 
-    public static HttpClientConnectionManager CONNECTION_MANAGER = null;
+    private static PoolingHttpClientConnectionManager connectionManager = null;
+
+
+    @Autowired
+    private ResourceLoader resourceLoader;
+
 
     /**
-     * 初始化 connection manager.
-     * @param keyStoreFile
-     * @param keyStorePass
-     * @param trustStoreFile
-     * @param trustStorePass
+     * 初始化 配置
+     *
      * @throws Exception
      */
-    public void init(String keyStoreFile, String keyStorePass,
-                     String trustStoreFile, String trustStorePass) throws Exception {
-        System.out.println("init conection pool...");
+    private void init() throws Exception {
 
-        InputStream ksis = new FileInputStream(new File(keyStoreFile));
-        InputStream tsis = new FileInputStream(new File(trustStoreFile));
 
+        System.err.println("init.....");
+        Resource resource = resourceLoader.getResource("classpath:bar.com.p12");
+        InputStream ksis = resource.getInputStream();
         KeyStore ks = KeyStore.getInstance("PKCS12");
         ks.load(ksis, keyStorePass.toCharArray());
 
-//        KeyStore ts = KeyStore.getInstance("JKS");
-//        ts.load(tsis, trustStorePass.toCharArray());
+         resource = resourceLoader.getResource("classpath:pay.foo.com.keystore");
 
-        SSLContext sslContext = SSLContexts.custom()
-                .loadKeyMaterial(ks, keyStorePass.toCharArray())
-                // 如果有 服务器证书
-              //  .loadTrustMaterial(ts, new TrustSelfSignedStrategy())
-                // 如果没有服务器证书，可以采用自定义 信任机制
-                 .loadTrustMaterial(null, new TrustStrategy() {
+        KeyStore trustStore = KeyStore.getInstance("JKS");
+        trustStore.load(resource.getInputStream(),trustStorePass.toCharArray());
 
-                 // 信任所有
-                 public boolean isTrusted(X509Certificate[] arg0,
-                 String arg1) throws CertificateException {
-                 return true;
-                 }
 
-                 })
+        SSLContext sslcontext = SSLContexts.custom()
+                .loadKeyMaterial(ks, "123456".toCharArray())
+                .loadTrustMaterial(trustStore, new TrustStrategy() {
+                    @Override
+                    public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        return true;
+                    }
+                })
+                .build();
+        // Allow TLSv1 protocol only
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                sslcontext,
+                new String[]{"TLSv1","TLSv1.1","TLSv1.2"},
+                null,
+                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+        CloseableHttpClient httpclient = HttpClients.custom()
+                .setSSLSocketFactory(sslsf)
                 .build();
 
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-                sslContext, new String[] { "TLSv1.1" }, null,
-                SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder
-                .<ConnectionSocketFactory> create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https", sslsf).build();
-        ksis.close();
-        tsis.close();
-        CONNECTION_MANAGER = new PoolingHttpClientConnectionManager(registry);
+        for (int i = 0; i < 100000; i++) {
 
-    }
-
-    /**
-     * do post
-     * @param url
-     * @param params
-     * @throws Exception
-     */
-    public void post(String url, String params) throws Exception {
-        if (CONNECTION_MANAGER == null) {
-            return;
-        }
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(CONNECTION_MANAGER).build();
-        HttpPost httpPost = new HttpPost(url);
-
-        httpPost.setEntity(new StringEntity(params,
-                ContentType.APPLICATION_JSON));
-//
-//        HttpHost proxy = new HttpHost("127.0.0.1", 8888);
-//
-//        RequestConfig requestConfig = RequestConfig.custom().setProxy(proxy).build();
-
-//        httpPost.setConfig(requestConfig);
-
-        CloseableHttpResponse resp = httpClient.execute(httpPost);
-        System.out.println(resp.getStatusLine());
-        InputStream respIs = resp.getEntity().getContent();
-        String content = convertStreamToString(respIs);
-        System.out.println(content);
-        EntityUtils.consume(resp.getEntity());
-    }
-
-
-    public static String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                is.close();
-            } catch (IOException e) {
+
+
+                HttpGet httpget = new HttpGet("https://pay.foo.com:9444/executeTransaction");
+
+                log.info("Executing request :{}",httpget.getRequestLine());
+
+                CloseableHttpResponse response = httpclient.execute(httpget);
+                try {
+                    HttpEntity entity = response.getEntity();
+
+                   log.info("----------------------------------------");
+                    System.out.println(response.getStatusLine());
+                    EntityUtils.consume(entity);
+                } finally {
+                    response.close();
+                }
+            }catch (Exception e){
+
                 e.printStackTrace();
             }
+
+            Thread.sleep(1000);
         }
-        return sb.toString();
+
     }
 
-    public static void main(String[] args) {
-        // 服务地址
-        String url = "https://127.0.0.1:8006/ping";
-        // 服务参数，这里接口的参数采用 json 格式传递
-        String params = "{\"merchantCode\": \"www.demo.com\","
-                + "\"sessionId\": \"10000011\"," + "\"userName\": \"jack\","
-                + "\"idNumber\": \"432652515\"," + "\"cardNo\": \"561231321\","
-                + "\"phoneNo\": \"\"}";
-        // 私钥证书
-        String keyStoreFile = keyStoreFilePath;
-        String keyStorePass = "123456";
 
-        // 配置信任证书库及密码
-        String trustStoreFile = trustStoreFilePath;
-        String trustStorePass = "123456";
-
-        HttpClientforSSL obj = new HttpClientforSSL();
-        try {
-            obj.init(keyStoreFile, keyStorePass, trustStoreFile, trustStorePass);
-            for (int i = 0; i < 10; i++) {
-                obj.post(url, params);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
     }
-
 }
+
 
 
 ```
