@@ -3,7 +3,7 @@
 ####  p12导出cer证书 
 > keytool -export -alias client -keystore client.key.p12 -storetype PKCS12  -rfc -file client.cer
 ####  将cer导入信任 server.keystore
-> keytool -import -v -file client.cer  -keystore server.keystore
+> keytool -import -file server.cer -keystore server.keystore
 
 
 ```java
