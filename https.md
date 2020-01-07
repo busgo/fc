@@ -27,6 +27,18 @@
 >   keytool -import -file server.cer -keystore pay.foo.com.keystrore
 
 
+5.将 bar.com.p12 和 pay.foo.com.keystore 导入项目中。
+
+
+6.加载客户端私钥(bar.com.p12)
+
+7.加载服务端公钥(pay.foo.com.keystore)信任keystore
+
+
+
+
+
+
 
 ```java
 package com.qy.trade.payment;
