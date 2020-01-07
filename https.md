@@ -18,6 +18,9 @@
 
 会产生 一个名字为bar.com.p12文件(注意一定要保存好密码)
 
+导出cer证书给服务端添加信任
+
+ >  keytool -export -alias bar.com.cer -keystore client.key.p12 -storetype PKCS12  -rfc -file bar.com.cer
 
 3.访问服务端地址将服务端的cer证书导出
 如 server.cer
